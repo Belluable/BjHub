@@ -1,29 +1,31 @@
 def change(a):
-    lst[a] = (lst[a]+1) % 2
-    return
+    return (a+1) % 2
 
 
 n = int(input())
-lst = [0] + list(map(int, input().split()))
+lst = [0] + list(map(int, input().split())) + [0]
 std = int(input())
 
 for _ in range(std):
     sex, num = map(int, input().split())
     if sex == 1:    # male
-        for i in range(num, n+1, num):
-            change(i)
+        i = 1
+        while num * i <= n:
+            n_num = num * i
+            lst[n_num] = change(lst[n_num])
+            i += 1
 
     elif sex == 2:  # female
-        change(num)
-
-        for i in range(n//2):
-            if num+i > n or num-i < 1:
-                break
+        i = 0
+        while num-i >= 1 and num+i <= n:
             if lst[num-i] == lst[num+i]:
-                change(num-i)
-                change(num + i)
+                i += 1
             else:
                 break
+        i -= 1
+
+        for k in range(num - i, num + i+1):
+            lst[k] = change(lst[k])
 
 for i in range(1, n+1):
     if i % 20 == 0:
